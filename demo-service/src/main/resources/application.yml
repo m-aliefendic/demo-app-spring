@@ -1,0 +1,30 @@
+## Base Configuration
+server:
+  port: 5000
+
+spring:
+  application:
+    name: demo-api.user
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: proba123
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: POSTGRESQL
+  flyway:
+    url: jdbc:postgresql://localhost:5432/test
+    baseline-on-migrate: true
+    user: postgres
+    password: proba123
+    baseline-description: "init"
+    baseline-version: 0
+logging:
+  level:
+    org.springframework: DEBUG
