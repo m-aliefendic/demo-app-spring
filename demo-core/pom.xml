@@ -10,7 +10,6 @@
 		<groupId>ba.com.demo</groupId>
 		<artifactId>spring-boot-demo</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<dependencies>
@@ -28,15 +27,24 @@
 		</dependency>
 		<dependency>
 			<groupId>ba.com.demo</groupId>
-			<artifactId>demo-rest</artifactId>
+			<artifactId>demo-dao</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>ba.com.demo</groupId>
-			<artifactId>demo-dao</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-			<scope>compile</scope>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>3.1.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>r05</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
 		</dependency>
 	</dependencies>
 

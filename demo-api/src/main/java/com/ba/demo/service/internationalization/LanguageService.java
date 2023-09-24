@@ -1,4 +1,4 @@
-package com.ba.demo.service;
+package com.ba.demo.service.internationalization;
 
 
 import com.ba.demo.api.model.time.Language;

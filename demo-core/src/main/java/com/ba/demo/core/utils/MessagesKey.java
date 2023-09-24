@@ -22,4 +22,7 @@ public class MessagesKey {
     public static final MessagesKey bad_username = new MessagesKey("bad_username",0);
     public static final MessagesKey require_authentication = new MessagesKey("require_authentication",0);
     public static final MessagesKey user_not_found = new MessagesKey("user_not_found",0);
+    public static final MessagesKey account_not_verified = new MessagesKey("account_not_verified",0);
+    public static final MessagesKey account_not_active = new MessagesKey("account_not_active",0);
+    public static final MessagesKey invalid_captcha = new MessagesKey("invalid_captcha",0);
 }

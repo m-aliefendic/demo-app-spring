@@ -6,12 +6,11 @@ import com.ba.demo.serviceinterface.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import javax.validation.Valid;
+import java.util.List;
+
 @RestController
 @RequestMapping("public/web-user/registration")
 @Api(tags = {"registration"})
@@ -24,5 +23,10 @@ public class UserRegistrationController {
     @PostMapping
     public ResponseEntity<UserDTO> startRegistration(@Valid @RequestBody UserDTO userEntity) throws UserException {
         return ResponseEntity.ok(userService.startRegistration(userEntity));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAll() throws UserException {
+        return ResponseEntity.ok(userService.getUsers());
     }
 }
