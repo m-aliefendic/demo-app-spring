@@ -1,6 +1,7 @@
 package com.ba.demo.configuration;
 
 import com.ba.demo.core.service.TokenService;
+import com.ba.demo.service.internationalization.InternationalizatonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -33,6 +36,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    InternationalizatonService internationalizatonService;
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+        http.antMatcher("/**/*")
+                //                .cors()
+                //                .and()
+                .csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).
+                and()
+                .authorizeRequests()
+
+                //USER APIS
+                .antMatchers(HttpMethod.POST,
+                        "/user/item"
+                )
+                .hasAuthority("USER")
+                .antMatchers("/*","/**/*", "/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .anonymous()
+                .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedEntryPoint());
+        http.addFilterBefore(new AuthenticationFilter(authenticationManager(), unauthorizedEntryPoint(), objectMapper, internationalizatonService), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new LoggerFilter(),AuthenticationFilter.class);
+    }
 
     @Override
     public void configure(final WebSecurity web) throws Exception {
@@ -51,8 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/v2/api-docs",
                 "/api/swagger-resources/**")
 
-
-                .antMatchers(HttpMethod.POST,  "/**/*", "/*")
                 .antMatchers(HttpMethod.GET,  "/**/*", "/*");
     }
     @Bean("authenticationManager")
@@ -67,15 +97,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
-//    @Override
-//    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(tokenAuthenticationProvider());
-//    }
+    @Override
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(tokenAuthenticationProvider());
+    }
 
-//    @Bean
-//    AuthenticationProvider tokenAuthenticationProvider() {
-//        return new TokenAuthenticationProvider(tokenService);
-//    }
+    @Bean
+    AuthenticationProvider tokenAuthenticationProvider() {
+        return new TokenAuthenticationProvider(tokenService);
+    }
 
     @Bean
     public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter() {

@@ -4,8 +4,8 @@ package com.ba.demo.core.service;
 import com.ba.demo.api.model.user.Role;
 import com.ba.demo.api.model.user.UserDTO;
 import com.ba.demo.core.config.TokenConfig;
-import com.ba.demo.dao.model.RoleEntity;
-import com.ba.demo.dao.model.token.Token;
+import com.ba.demo.dao.model.user.RoleEntity;
+import com.ba.demo.dao.model.token.TokenEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class JwtService {
 
     }
 
-    public String create(final Token token, final Set<RoleEntity> role) {
+    public String create(final TokenEntity token, final Set<RoleEntity> role) {
 
         return Jwts.builder()
                 .setSubject(token.getId().toString())

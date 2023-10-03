@@ -38,8 +38,12 @@ public class TokenConfig {
     public Duration tokenCacheTtlSeconds() {
         return Duration.ofSeconds(tokenCacheTtlSeconds);
     }
+
     public String jwtSecretKey() {
         return jwtSecretKey;
     }
 
+    public long tokenCacheMaxSize() {
+        return tokenCacheMaxSize;
+    }
 }

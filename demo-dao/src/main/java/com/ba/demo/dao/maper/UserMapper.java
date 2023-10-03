@@ -2,7 +2,7 @@ package com.ba.demo.dao.maper;
 
 
 import com.ba.demo.api.model.user.UserDTO;
-import com.ba.demo.dao.model.UserEntity;
+import com.ba.demo.dao.model.user.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;

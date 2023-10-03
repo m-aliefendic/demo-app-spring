@@ -1,4 +1,4 @@
-package com.ba.demo.dao.model;
+package com.ba.demo.dao.model.user;
 
 import lombok.Getter;
 import lombok.Setter;

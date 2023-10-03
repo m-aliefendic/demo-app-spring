@@ -24,5 +24,5 @@ public class MessagesKey {
     public static final MessagesKey user_not_found = new MessagesKey("user_not_found",0);
     public static final MessagesKey account_not_verified = new MessagesKey("account_not_verified",0);
     public static final MessagesKey account_not_active = new MessagesKey("account_not_active",0);
-    public static final MessagesKey invalid_captcha = new MessagesKey("invalid_captcha",0);
+    public static final MessagesKey invalid_token = new MessagesKey("invalid_token",0);
 }

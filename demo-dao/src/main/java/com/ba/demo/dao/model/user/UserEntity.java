@@ -1,15 +1,14 @@
-package com.ba.demo.dao.model;
+package com.ba.demo.dao.model.user;
 
-import com.ba.demo.api.model.user.RoleDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "USERS")
@@ -38,5 +37,11 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id") // Foreign key column in UserRoles table
     )
     private Set<RoleEntity> roles;
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("USER"));
+        return  authorities;
+    }
 
 }

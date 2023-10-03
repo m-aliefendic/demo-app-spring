@@ -6,7 +6,7 @@ import com.ba.demo.core.utils.ErrorCode;
 import com.ba.demo.core.utils.MessagesKey;
 import com.ba.demo.core.utils.SpecificException;
 import com.ba.demo.dao.maper.UserMapper;
-import com.ba.demo.dao.model.UserEntity;
+import com.ba.demo.dao.model.user.UserEntity;
 import com.ba.demo.dao.repository.UserRepository;
 import com.ba.demo.api.model.user.exception.UserException;
 import com.ba.demo.service.internationalization.InternationalizatonService;

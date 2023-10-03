@@ -2,24 +2,39 @@ package com.ba.demo.core.service;
 
 import com.ba.demo.api.model.token.TokenRequestDTO;
 import com.ba.demo.api.model.token.TokenResponseDTO;
+import com.ba.demo.api.model.user.RoleDTO;
+import com.ba.demo.api.model.user.UserDTO;
+import com.ba.demo.api.model.user.exception.UserNotFoundException;
 import com.ba.demo.core.config.TokenConfig;
 import com.ba.demo.core.utils.ErrorCode;
 import com.ba.demo.core.utils.MessagesKey;
 import com.ba.demo.core.utils.SpecificException;
-import com.ba.demo.dao.model.UserEntity;
+import com.ba.demo.dao.model.user.UserEntity;
 //import com.ba.demo.dao.model.token.Token;
-import com.ba.demo.dao.model.token.Token;
+import com.ba.demo.dao.model.token.TokenEntity;
+import com.ba.demo.dao.repository.CustomUserRepository;
 import com.ba.demo.dao.repository.TokenRepository;
 import com.ba.demo.dao.repository.UserRepository;
+import com.ba.demo.service.internationalization.InternationalizatonService;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
+import org.flywaydb.core.internal.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.springframework.transaction.annotation.Transactional;
+import com.google.common.cache.LoadingCache;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.PostConstruct;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 @Component
@@ -42,24 +57,48 @@ public class TokenService {
     private final SaltService saltService;
     @NonNull
     private final UserRepository abstractUserRepository;
+    @NonNull
+    private final InternationalizatonService internationalizatonService;
+
+    @NonNull
+    private final CustomUserRepository genericUserService;
+
+
+    private  LoadingCache<UUID, Optional<UUID>> currentUsers;
+
+    @PostConstruct
+    public void init() {
+        currentUsers = CacheBuilder.<UUID, Optional<UUID>>newBuilder()
+                .expireAfterWrite(config.tokenCacheTtlSeconds().getSeconds(), TimeUnit.SECONDS)
+                .maximumSize(config.tokenCacheMaxSize())
+                .build(new CacheLoader<UUID, Optional<UUID>>() {
+                    @Override
+                    public Optional<UUID> load(final UUID tokenId) throws Exception {
+                        return tokenRepository.findById(tokenId)
+                                .filter(token -> timeService.isFuture(token.getExpiresOn()))
+                                .map(TokenEntity::getUserId);
+                    }
+                });
+
+    }
 
 
 
-//    @Transactional(readOnly = true)
-//    public MutablePair<UserDTO, Collection<? extends GrantedAuthority>> verifyLoginToken(final String tokenEncrypted) throws UserNotFoundException, ExecutionException {
-//        LOGGER.debug("Verifying token : {}***", StringUtils.left(tokenEncrypted, 3));
-//        Optional<Identity> parse = jwtService.parse(tokenEncrypted);
-//        if (parse.isPresent()) {
-//            Optional<Identity> userId = this.currentUsers.get(parse.get());
-//            if (userId.isPresent()) {
-//                LOGGER.debug("Getting user : {}", userId.get());
-//                return this.genericUserService.findAbstractUser(userId.get());
-//            }
-//        }
-//        LOGGER.debug("User not found.");
-//        String msg = internationalizatonService.get("not_found", tokenEncrypted);
-//        throw new UserNotFoundException(msg);
-//    }
+    @Transactional(readOnly = true)
+    public MutablePair<UserDTO, Collection<? extends GrantedAuthority>>  verifyLoginToken(final String tokenEncrypted) throws UserNotFoundException, ExecutionException {
+        LOGGER.debug("Verifying token : {}***", StringUtils.left(tokenEncrypted, 3));
+        Optional<UUID> parse = jwtService.parse(tokenEncrypted);
+        if (parse.isPresent()) {
+            Optional<UUID> userId = this.currentUsers.get(parse.get());
+            if (userId.isPresent()) {
+                LOGGER.debug("Getting user : {}", userId.get());
+                return this.genericUserService.findAbstractUser(userId.get());
+            }
+        }
+        LOGGER.debug("User not found.");
+        String msg = internationalizatonService.get("not_found", tokenEncrypted);
+        throw new UserNotFoundException(msg);
+    }
 
     @Transactional
     public TokenResponseDTO createUserToken(final TokenRequestDTO request) throws BadCredentialsException {
@@ -144,7 +183,7 @@ public class TokenService {
 
 
     private TokenResponseDTO findOrCreateToken(UserEntity user) {
-        Token tkn = new Token(identitySupplier.get(), user.getId(), timeService.now(), timeService.after(config.tokenTtlDays()));
+        TokenEntity tkn = new TokenEntity(identitySupplier.get(), user.getId(), timeService.now(), timeService.after(config.tokenTtlDays()));
         tkn = tokenRepository.save(tkn);
         return new TokenResponseDTO(jwtService.create(tkn, user.getRoles()));
     }

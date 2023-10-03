@@ -17,7 +17,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Token {
+public class TokenEntity {
     @Id
     UUID id;
     UUID userId;
@@ -28,7 +28,7 @@ public class Token {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Token that = (Token) o;
+        TokenEntity that = (TokenEntity) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(createdOn, that.createdOn);
     }
