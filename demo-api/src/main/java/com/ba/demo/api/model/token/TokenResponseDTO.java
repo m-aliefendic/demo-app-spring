@@ -15,13 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TokenResponseDTO {
 
-    private String token;
+  private String token;
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("TokenDto{");
-        sb.append(", token='").append(token).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder("TokenDto{");
+    sb.append(", token='").append(token).append('\'');
+    sb.append('}');
+    return sb.toString();
+  }
 }

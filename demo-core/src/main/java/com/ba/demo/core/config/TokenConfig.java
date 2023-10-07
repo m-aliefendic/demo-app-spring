@@ -1,14 +1,12 @@
 package com.ba.demo.core.config;
 
+import java.time.Duration;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
 
 @Component
 @ConfigurationProperties(prefix = "demo-api.user.token")
@@ -18,32 +16,32 @@ import java.time.Duration;
 @NoArgsConstructor
 public class TokenConfig {
 
-    private String jwtSecretKey;
-    private int tokenTtlDays;
-    private int webTokenTtlMinutes;
-    private int activationTokenTtlDays;
-    private int tokenCacheTtlSeconds;
-    private long tokenCacheMaxSize;
-    private int activationNumberTtlSeconds;
-    private int activationNumberLength;
+  private String jwtSecretKey;
+  private int tokenTtlDays;
+  private int webTokenTtlMinutes;
+  private int activationTokenTtlDays;
+  private int tokenCacheTtlSeconds;
+  private long tokenCacheMaxSize;
+  private int activationNumberTtlSeconds;
+  private int activationNumberLength;
 
-    public Duration tokenTtlDays() {
-        return Duration.ofDays(tokenTtlDays);
-    }
+  public Duration tokenTtlDays() {
+    return Duration.ofDays(tokenTtlDays);
+  }
 
-    public Duration webTokenTtlMinutes() {
-        return Duration.ofMinutes(webTokenTtlMinutes);
-    }
+  public Duration webTokenTtlMinutes() {
+    return Duration.ofMinutes(webTokenTtlMinutes);
+  }
 
-    public Duration tokenCacheTtlSeconds() {
-        return Duration.ofSeconds(tokenCacheTtlSeconds);
-    }
+  public Duration tokenCacheTtlSeconds() {
+    return Duration.ofSeconds(tokenCacheTtlSeconds);
+  }
 
-    public String jwtSecretKey() {
-        return jwtSecretKey;
-    }
+  public String jwtSecretKey() {
+    return jwtSecretKey;
+  }
 
-    public long tokenCacheMaxSize() {
-        return tokenCacheMaxSize;
-    }
+  public long tokenCacheMaxSize() {
+    return tokenCacheMaxSize;
+  }
 }

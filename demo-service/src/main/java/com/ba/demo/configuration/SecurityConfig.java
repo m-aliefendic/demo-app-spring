@@ -3,6 +3,7 @@ package com.ba.demo.configuration;
 import com.ba.demo.core.service.TokenService;
 import com.ba.demo.service.InternationalizatonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,95 +22,95 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter;
 
-
-import javax.servlet.http.HttpServletResponse;
-
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
-    @Autowired
-    private TokenService tokenService;
+  @Autowired private TokenService tokenService;
 
-    @Autowired
-    ObjectMapper objectMapper;
+  @Autowired ObjectMapper objectMapper;
 
-    @Autowired
-    InternationalizatonService internationalizatonService;
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-        http.antMatcher("/**/*")
-                //                .cors()
-                //                .and()
-                .csrf()
-                .disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).
-                and()
-                .authorizeRequests()
+  @Autowired InternationalizatonService internationalizatonService;
 
-                //USER APIS
-                .antMatchers(HttpMethod.POST,
-                        "/user/item"
-                )
-                .hasAuthority("USER")
-                .antMatchers("/*","/**/*", "/").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .anonymous()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedEntryPoint());
-        http.addFilterBefore(new AuthenticationFilter(authenticationManager(), unauthorizedEntryPoint(), objectMapper, internationalizatonService), BasicAuthenticationFilter.class);
-        http.addFilterBefore(new LoggerFilter(),AuthenticationFilter.class);
-    }
+  @Override
+  protected void configure(final HttpSecurity http) throws Exception {
+    http.antMatcher("/**/*")
+        //                .cors()
+        //                .and()
+        .csrf()
+        .disable()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeRequests()
 
-    @Override
-    public void configure(final WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(
-                //Registration
-                "/public/**/*",
-                "/public/*",
+        // USER APIS
+        .antMatchers(HttpMethod.POST, "/user/item")
+        .hasAuthority("USER")
+        .antMatchers("/*", "/**/*", "/")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .anonymous()
+        .disable()
+        .exceptionHandling()
+        .authenticationEntryPoint(unauthorizedEntryPoint());
+    http.addFilterBefore(
+        new AuthenticationFilter(
+            authenticationManager(),
+            unauthorizedEntryPoint(),
+            objectMapper,
+            internationalizatonService),
+        BasicAuthenticationFilter.class);
+    http.addFilterBefore(new LoggerFilter(), AuthenticationFilter.class);
+  }
 
+  @Override
+  public void configure(final WebSecurity web) throws Exception {
+    web.ignoring()
+        .antMatchers(
+            // Registration
+            "/public/**/*",
+            "/public/*",
+            "/swagger-resources",
+            "/swagger-resources/*",
+            "/swagger-resources/**/*",
+            "/swagger-ui.html",
+            "/swagger-ui.html/**/*",
+            "/swagger-ui.html/*",
+            "/api/v2/api-docs",
+            "/api/swagger-resources/**")
+        .antMatchers(HttpMethod.GET, "/**/*", "/*");
+  }
 
-                "/swagger-resources",
-                "/swagger-resources/*",
-                "/swagger-resources/**/*",
-                "/swagger-ui.html",
-                "/swagger-ui.html/**/*",
-                "/swagger-ui.html/*",
-                "/api/v2/api-docs",
-                "/api/swagger-resources/**")
+  @Bean("authenticationManager")
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 
-                .antMatchers(HttpMethod.GET,  "/**/*", "/*");
-    }
-    @Bean("authenticationManager")
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-    @Bean
-    AuthenticationEntryPoint unauthorizedEntryPoint() {
-        return (request, response, authException) -> {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
-        };
-    }
+  @Bean
+  AuthenticationEntryPoint unauthorizedEntryPoint() {
+    return (request, response, authException) -> {
+      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+    };
+  }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(tokenAuthenticationProvider());
-    }
+  @Override
+  protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+    auth.authenticationProvider(tokenAuthenticationProvider());
+  }
 
-    @Bean
-    AuthenticationProvider tokenAuthenticationProvider() {
-        return new TokenAuthenticationProvider(tokenService);
-    }
+  @Bean
+  AuthenticationProvider tokenAuthenticationProvider() {
+    return new TokenAuthenticationProvider(tokenService);
+  }
 
-    @Bean
-    public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter() {
-        return new SecurityContextHolderAwareRequestFilter();
-    }
-
+  @Bean
+  public SecurityContextHolderAwareRequestFilter securityContextHolderAwareRequestFilter() {
+    return new SecurityContextHolderAwareRequestFilter();
+  }
 }

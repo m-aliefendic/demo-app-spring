@@ -10,5 +10,5 @@ import org.springframework.stereotype.Component;
 @Setter
 @ConfigurationProperties(prefix = "demo-api.email")
 public class EmailConfig {
-    private String from;
+  private String from;
 }

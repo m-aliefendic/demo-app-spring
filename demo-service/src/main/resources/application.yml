@@ -33,14 +33,14 @@ demo-api:
   # The key MUST be overwritten in production
   user:
     token:
-      jwtSecretKey                : "b77584f919bc88a5343dd24374f6fc1af0d0dfb907e8783911f1d7bf3771a752d8a72dc69434665bb6f3cdd416b152d626544fce9840cf67718ece0dd28a1cb8"
-      tokenTtlDays                : 7
-      activationTokenTtlDays      : 1
-      tokenCacheTtlSeconds        : 60
-      tokenCacheMaxSize           : 1000
-      webTokenTtlMinutes          : 1800
-      activationNumberTtlSeconds  : 300
-      activationNumberLength      : 6
+      jwtSecretKey: "b77584f919bc88a5343dd24374f6fc1af0d0dfb907e8783911f1d7bf3771a752d8a72dc69434665bb6f3cdd416b152d626544fce9840cf67718ece0dd28a1cb8"
+      tokenTtlDays: 7
+      activationTokenTtlDays: 1
+      tokenCacheTtlSeconds: 60
+      tokenCacheMaxSize: 1000
+      webTokenTtlMinutes: 1800
+      activationNumberTtlSeconds: 300
+      activationNumberLength: 6
   cors:
     allowed-origins: "**"
   email:

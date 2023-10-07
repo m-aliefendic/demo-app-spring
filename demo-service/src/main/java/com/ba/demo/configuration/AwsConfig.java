@@ -13,23 +13,22 @@ import org.springframework.mail.javamail.JavaMailSender;
 @Configuration
 public class AwsConfig {
 
-    @Bean
-    public ClientConfiguration clientConfiguration() {
-        return new ClientConfiguration();
-    }
+  @Bean
+  public ClientConfiguration clientConfiguration() {
+    return new ClientConfiguration();
+  }
 
+  @Bean
+  public AmazonSimpleEmailService amazonSimpleEmailService(
+      AWSCredentialsProvider credentialsProvider) {
+    return AmazonSimpleEmailServiceClientBuilder.standard()
+        .withCredentials(credentialsProvider)
+        .withRegion(Regions.EU_NORTH_1)
+        .build();
+  }
 
-
-    @Bean
-    public AmazonSimpleEmailService amazonSimpleEmailService(AWSCredentialsProvider credentialsProvider) {
-        return AmazonSimpleEmailServiceClientBuilder.standard()
-                .withCredentials(credentialsProvider)
-                .withRegion(Regions.EU_NORTH_1).build();
-    }
-    @Bean
-    public JavaMailSender mailSender(AmazonSimpleEmailService ses) {
-        return new SimpleEmailServiceJavaMailSender(ses);
-    }
-
-
+  @Bean
+  public JavaMailSender mailSender(AmazonSimpleEmailService ses) {
+    return new SimpleEmailServiceJavaMailSender(ses);
+  }
 }
