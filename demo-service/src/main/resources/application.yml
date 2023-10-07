@@ -41,3 +41,17 @@ demo-api:
       webTokenTtlMinutes          : 1800
       activationNumberTtlSeconds  : 300
       activationNumberLength      : 6
+  cors:
+    allowed-origins: "**"
+  email:
+    from: meho.aliefendic@gmail.com
+cloud:
+  aws:
+    region:
+      static: eu-north-1
+    credentials:
+      accessKey: AKIAQFS65AH6DPEURM42
+      secretKey: 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
+      instanceProfile: false
+    stack:
+      auto: false

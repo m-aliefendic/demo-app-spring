@@ -27,8 +27,9 @@ public class UserEntity {
     private LocalDateTime dateOfBirth;
     private LocalDateTime registrationDate;
     private LocalDateTime updated;
-    private String language;
-    public String salt;
+    private Integer language;
+    private String salt;
+    private UUID activationToken;
 
     @ManyToMany
     @JoinTable(

@@ -10,7 +10,7 @@ import com.ba.demo.dao.model.item.ItemEntity;
 import com.ba.demo.dao.model.user.UserEntity;
 import com.ba.demo.dao.repository.CustomItemRepository;
 import com.ba.demo.dao.repository.UserRepository;
-import com.ba.demo.service.internationalization.InternationalizatonService;
+import com.ba.demo.service.InternationalizatonService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

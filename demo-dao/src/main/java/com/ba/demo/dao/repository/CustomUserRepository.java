@@ -1,12 +1,10 @@
 package com.ba.demo.dao.repository;
 
 
-import com.ba.demo.api.model.user.RoleDTO;
 import com.ba.demo.api.model.user.UserDTO;
 import com.ba.demo.api.model.user.exception.UserNotFoundException;
 import com.ba.demo.dao.maper.UserMapper;
-import com.ba.demo.dao.model.user.UserEntity;
-import com.ba.demo.service.internationalization.InternationalizatonService;
+import com.ba.demo.service.InternationalizatonService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -17,9 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.rmi.server.UID;
 import java.util.Collection;
-import java.util.Set;
 import java.util.UUID;
 
 @Repository

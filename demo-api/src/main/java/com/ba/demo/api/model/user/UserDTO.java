@@ -25,6 +25,6 @@ public class UserDTO {
     private LocalDateTime dateOfBirth;
     private LocalDateTime registrationDate;
     private LocalDateTime updated;
-    private String language;
+    private Integer language;
     private Set<RoleDTO> roles;
 }

@@ -2,7 +2,7 @@ package com.ba.demo.core.utils;
 
 import com.ba.demo.api.model.user.exception.UserException;
 import com.ba.demo.api.model.user.exception.UserNotFoundException;
-import com.ba.demo.service.internationalization.InternationalizatonService;
+import com.ba.demo.service.InternationalizatonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.google.common.base.Preconditions;

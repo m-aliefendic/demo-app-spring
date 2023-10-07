@@ -1,7 +1,7 @@
 package com.ba.demo.configuration;
 
 import com.ba.demo.core.service.TokenService;
-import com.ba.demo.service.internationalization.InternationalizatonService;
+import com.ba.demo.service.InternationalizatonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

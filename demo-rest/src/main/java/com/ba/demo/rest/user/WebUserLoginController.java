@@ -25,6 +25,4 @@ public class WebUserLoginController {
         return ResponseEntity.ok(tokenService.createUserToken(tokenDTO));
     }
 
-
-
 }

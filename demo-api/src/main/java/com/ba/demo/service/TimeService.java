@@ -1,4 +1,4 @@
-package com.ba.demo.core.service;
+package com.ba.demo.service;
 
 import org.springframework.stereotype.Component;
 
