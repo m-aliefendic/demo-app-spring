@@ -44,4 +44,8 @@ public class TokenConfig {
   public long tokenCacheMaxSize() {
     return tokenCacheMaxSize;
   }
+
+  public Duration activationTokenTtlDays() {
+    return Duration.ofDays(activationTokenTtlDays);
+  }
 }

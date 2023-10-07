@@ -13,4 +13,6 @@ public interface UserRepository extends CrudRepository<UserEntity, UUID> {
   Page<UserEntity> findAll(Pageable pageable);
 
   Optional<UserEntity> findByEmail(String email);
+
+  Optional<UserEntity> findByEmailAndActivationToken(String email, UUID activationToken);
 }
